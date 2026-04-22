@@ -1,45 +1,162 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Vintage Festival - Campus Créatif</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Créatif | UCLille</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-  <h1>🎉 Le Vintage Festival : le Campus Créatif transforme notre université</h1>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <img src="https://www.univ-catholille.fr/sites/default/files/logo-ucl.png" alt="Logo UCL" class="logo">
+                <div class="separator"></div>
+                <span class="site-name">Campus Créatif</span>
+            </div>
+            <div class="nav-links">
+                <a href="#ateliers">Ateliers</a>
+                <a href="#agenda">Événements</a>
+                <a href="#recrutement" class="btn-contact">Nous rejoindre</a>
+            </div>
+        </div>
+    </nav>
 
-  <div class="image-block">
-    <img src="https://www.univ-catholille.fr/wp-content/uploads/2024/02/DSC04206.jpg" alt="Campus transformé">
-    <div class="caption">Le Campus Créatif métamorphosé pour une expérience rétro immersive</div>
-  </div>
+    <header class="hero">
+        <div class="hero-video-container">
+            <video autoplay muted loop playsinline class="hero-video">
+                <source src="video-accueil.mp4" type="video/mp4">
+            </video>
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <span class="hero-subtitle">Culture • Art • Études</span>
+            <h1 class="hero-title">L'Audace <span>Créative</span></h1>
+            <div class="hero-line"></div>
+            <p class="hero-desc">Explorez les 60 disciplines artistiques de l'Université Catholique de Lille.</p>
+            <div class="hero-btns">
+                <a href="#ateliers" class="btn-main">Explorer le catalogue</a>
+                <a href="#agenda" class="btn-secondary">Voir les événements</a>
+            </div>
+        </div>
+    </header>
 
-  <p>Le <span class="highlight">28 mars 2026</span>, notre <span class="highlight">Campus Créatif</span> va transformer l’ensemble de l’université pour accueillir le <span class="highlight">Vintage Festival</span>. Imaginez un campus entièrement métamorphosé : pistes de danse lumineuses, zones photo rétro, stands créatifs, friperies vintage et mini-arènes de jeux… <span class="highlight">tout l’université devient un terrain de découvertes et de surprises</span>, pour petits et grands, dès 17h et jusqu’à minuit !</p>
+    <section id="ateliers" class="section-ateliers">
+        <div class="container">
+            <header class="section-header">
+                <h2 class="title-serif">Nos <span>Ateliers</span></h2>
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="danse">Danse</button>
+                    <button class="filter-btn" data-filter="visuels">Arts Visuels</button>
+                    <button class="filter-btn" data-filter="theatre">Théâtre</button>
+                    <button class="filter-btn" data-filter="musique">Musique</button>
+                    <button class="filter-btn" data-filter="digital">Digital & Textile</button>
+                </div>
+            </header>
 
-  <h2>🕔 17h – 19h : un espace pensé pour les familles</h2>
-  <div class="image-block">
-    <img src="https://www.activites-educatives.fr/wp-content/uploads/2020/03/AdobeStock_154985457-scaled.jpeg.webp" alt="Ateliers enfants">
-    <div class="caption">Ateliers artistiques et mini Roller Disco pour les enfants</div>
-  </div>
-  <p>Durant ces deux premières heures, un espace est spécialement prévu pour les familles et vos enfants, avec <span class="highlight">ateliers artistiques ludiques</span> et un mini Roller Disco sécurisé. Mais rassurez-vous : <span class="highlight">toutes les autres animations du festival restent accessibles à tous dès l’ouverture</span>.</p>
+            <div class="workshop-grid grid-danse" id="workshop-container">
+                <div class="workshop-item danse"> <div class="w-main"><h4>Heels Dance 1</h4><p>Emeline • Lun. 18h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Heels Dance 2</h4><p>Emeline • Lun. 19h30</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Afro Fusion 1</h4><p>Imane • Mar. 18h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Afro Fusion 2</h4><p>Imane • Mar. 19h30</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Street Jazz 1</h4><p>Juliette • Mer. 17h30</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Street Jazz 2</h4><p>Juliette • Mer. 19h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Hip Hop 1</h4><p>Billal • Jeu. 18h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Hip Hop 2</h4><p>Billal • Jeu. 19h30</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Hip Hop Girly Deb.</h4><p>Aurélie • Lun. 17h30</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Hip Hop Girly Av.</h4><p>Aurélie • Lun. 19h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>K-Pop 1</h4><p>Maddy • Mar. 17h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>K-Pop 2</h4><p>Maddy • Mar. 18h30</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Danse Orientale</h4><p>Juliette • Jeu. 17h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Contemporain</h4><p>Maddy • Mer. 18h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Salsa</h4><p>Gaëlle • Jeu. 18h30</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Bachata</h4><p>Anastasiya • Jeu. 20h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Contempo Classique</h4><p>Françoise • Mer. 14h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Comédie Musicale</h4><p>Tamara • Mar. 19h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Tecktonik</h4><p>Billal • Ven. 18h00</p></div> </div>
+                <div class="workshop-item danse"> <div class="w-main"><h4>Théâtre Musical</h4><p>Antoine • Jeu. 19h00</p></div> </div>
 
-  <h2>🕖 17h – minuit : une expérience immersive pour tous</h2>
-  <div class="image-block">
-    <img src="https://www.magtoo.fr/wp-content/uploads/2021/08/too44-newsmode-rookies-bump.jpg" alt="Roller Disco">
-    <div class="caption">Roller Disco et concerts live pour danser jusqu’au bout de la nuit</div>
-  </div>
-  <p>Pendant toute la soirée, profitez de <span class="highlight">Roller Disco</span>, de <span class="highlight">concerts live</span>, des friperies et ateliers créatifs, du retrogaming et des espaces photo immersifs. Chaque espace a été pensé pour offrir une expérience conviviale et mémorable. Que vous veniez en famille, entre amis ou seul, le <span class="highlight">Vintage Festival est fait pour vous</span>.</p>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Céramique 1 & 2</h4><p>Mer. 14h00 / 16h30</p></div> </div>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Illustration</h4><p>Mar. 17h30</p></div> </div>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Peinture</h4><p>Lun. 18h00</p></div> </div>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Aquarelle</h4><p>Jeu. 18h00</p></div> </div>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Dessin</h4><p>Mer. 18h00</p></div> </div>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Poésie & Écriture</h4><p>Mar. 18h00</p></div> </div>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Recette Coquette</h4><p>Sam. 10h00</p></div> </div>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Carnet de bord 1 & 2</h4><p>Ven. 17h00</p></div> </div>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Fresque & Linogravure</h4><p>Mer. 14h00</p></div> </div>
+                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Art Plastique Multi.</h4><p>Lun. 17h00</p></div> </div>
 
-  <h2>🎟️ Billetterie et informations pratiques</h2>
-  <p>- <span class="highlight">Date</span> : samedi 28 mars 2026<br>
-     - <span class="highlight">Lieu</span> : Université Catholique de Lille, entièrement transformée par le Campus Créatif<br>
-     - <span class="highlight">Horaires</span> : 17h – minuit (avec espace famille 17h–19h)<br>
-     - <span class="highlight">Billetterie</span> : places limitées !</p>
+                <div class="workshop-item theatre" style="display:none"> <div class="w-main"><h4>Théâtre Contempo. 1 & 2</h4><p>Lun. 19h00 / Mer. 19h30</p></div> </div>
+                <div class="workshop-item theatre" style="display:none"> <div class="w-main"><h4>Théâtre Impro 1 & 2</h4><p>Mar. 18h30 / Jeu. 18h30</p></div> </div>
+                <div class="workshop-item theatre" style="display:none"> <div class="w-main"><h4>Théâtre Classique</h4><p>Mar. 17h00</p></div> </div>
 
-  <a href="#" class="cta">🎫 Réserver ma place</a>
+                <div class="workshop-item musique" style="display:none"> <div class="w-main"><h4>Cours de Chant 1 & 2</h4><p>Lun. 18h00 / Mer. 18h00</p></div> </div>
+                <div class="workshop-item musique" style="display:none"> <div class="w-main"><h4>Guitare Deb. / Av.</h4><p>Mar. 17h30 / 19h00</p></div> </div>
+                <div class="workshop-item musique" style="display:none"> <div class="w-main"><h4>Cours de Piano</h4><p>Mer. 14h00</p></div> </div>
+                <div class="workshop-item musique" style="display:none"> <div class="w-main"><h4>Comp. Musicale</h4><p>Ven. 17h30</p></div> </div>
 
+                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Couture & Haute Couture</h4><p>Lun. 18h00 / Mer. 18h30</p></div> </div>
+                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Crochet, Broderie, Tricot</h4><p>Mar. 17h30 / Jeu. 17h30</p></div> </div>
+                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Photo Arg. / Num.</h4><p>Mer. 14h00 / Jeu. 18h00</p></div> </div>
+                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Podcast & Vidéo</h4><p>Mar. 17h00 / Lun. 18h30</p></div> </div>
+                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Court Métrage</h4><p>Ven. 17h00</p></div> </div>
+            </div>
+        </div>
+    </section>
 
-</div>
+    <section id="agenda" class="section-agenda">
+        <div class="container">
+            <h2 class="title-serif light">Découvre nos <span>événements</span></h2>
+            
+            <div class="swiper event-slider">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="event-card main-event">
+                            <div class="event-img" style="background-image: url('affiche1.jpg');"></div>
+                            <div class="event-overlay">
+                                <span class="event-tag">À l'Affiche</span>
+                                <h3>Grand Gala de Printemps</h3>
+                                <p>Le rendez-vous incontournable à l'Aula Maxima.</p>
+                                <a href="Lien_Weezevent" class="btn-ticket">Billetterie Weezevent</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide"><div class="event-card"><div class="event-img"></div><div class="event-info"><h5>Festival d'Hiver</h5><p>Décembre 2026</p><a href="#">Réserver →</a></div></div></div>
+                    <div class="swiper-slide"><div class="event-card"><div class="event-img"></div><div class="event-info"><h5>Soirée Impro</h5><p>Janvier 2026</p><a href="#">Réserver →</a></div></div></div>
+                    <div class="swiper-slide"><div class="event-card"><div class="event-img"></div><div class="event-info"><h5>Concert Acoustique</h5><p>Février 2026</p><a href="#">Réserver →</a></div></div></div>
+                    <div class="swiper-slide"><div class="event-card"><div class="event-img"></div><div class="event-info"><h5>Vernissage Expo</h5><p>Mars 2026</p><a href="#">Infos →</a></div></div></div>
+                    </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="recrutement" class="section-intervenants">
+        <div class="container">
+            <div class="inter-grid">
+                <div class="inter-image">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800" alt="Intervenant">
+                        <div class="image-overlay-gold"></div>
+                    </div>
+                </div>
+                <div class="inter-content">
+                    <span class="label-gold">Collaborations 2026/2027</span>
+                    <h2 class="title-serif">Faisons vibrer le <span>Campus ensemble</span></h2>
+                    <p class="inter-desc">Vous êtes artiste ou professionnel ? Proposez vos formats d'ateliers hybrides.</p>
+                    <a href="mailto:campus.creatif@univ-catholille.fr" class="btn-luxe">Proposer un atelier</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
