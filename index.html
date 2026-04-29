@@ -3,160 +3,533 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Créatif | UCLille</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Campus Créatif | Université Catholique de Lille</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-    <nav class="navbar">
+    <style>
+        /* ============================================================
+           SYSTÈME DE DESIGN UCLILLE (CHARTE OFFICIELLE)
+           ============================================================ */
+        :root {
+            --ucl-blue: #002d5d;         /* Bleu de minuit UCL */
+            --ucl-gold: #c5a059;         /* Or institutionnel */
+            --ucl-grey: #f2f2f2;         /* Gris de fond */
+            --white: #ffffff;
+            --text-dark: #1a1a1a;
+            --text-light: #555555;
+            --border: rgba(0, 45, 93, 0.1);
+            --transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background: var(--white); 
+            color: var(--ucl-blue); 
+            scroll-behavior: smooth; 
+            overflow-x: hidden;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { max-width: 1300px; margin: auto; padding: 0 40px; }
+        .container-large { max-width: 1500px; margin: auto; padding: 0 50px; }
+
+        h1, h2, h3, .serif { font-family: 'Playfair Display', serif; }
+
+        /* ============================================================
+           NAVIGATION & HEADER
+           ============================================================ */
+        .navbar { 
+            position: fixed; top: 0; width: 100%; height: 100px; 
+            z-index: 3000; display: flex; align-items: center; 
+            transition: var(--transition); background: transparent;
+        }
+
+        .navbar.scrolled, .page-ateliers-active .navbar { 
+            background: rgba(255, 255, 255, 0.98); height: 85px; 
+            backdrop-filter: blur(15px);
+            border-bottom: 4px solid var(--ucl-gold); 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        .nav-container { width: 100%; max-width: 1400px; margin: auto; padding: 0 60px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .brand { display: flex; align-items: center; gap: 20px; text-decoration: none; cursor: pointer; }
+        .logo { height: 50px; transition: 0.4s; }
+        /* Inversion du logo sur le fond vidéo de l'accueil */
+        .navbar:not(.scrolled):not(.page-ateliers-active) .logo { filter: brightness(0) invert(1); }
+        
+        .separator { width: 1px; height: 35px; background: rgba(255,255,255,0.3); }
+        .navbar.scrolled .separator, .page-ateliers-active .navbar .separator { background: var(--ucl-blue); }
+
+        .site-name { color: white; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; font-size: 0.85rem; }
+        .navbar.scrolled .site-name, .page-ateliers-active .navbar .site-name { color: var(--ucl-blue); }
+
+        .nav-links a { 
+            text-decoration: none; color: white; font-weight: 700; 
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px; 
+            margin-left: 35px; transition: 0.3s;
+        }
+        .navbar.scrolled .nav-links a, .page-ateliers-active .navbar .nav-links a { color: var(--ucl-blue); }
+        .btn-nav-gold { border: 2px solid var(--ucl-gold); padding: 12px 25px; color: var(--ucl-gold) !important; font-weight: 800; }
+        .btn-nav-gold:hover { background: var(--ucl-gold); color: white !important; }
+
+        /* ============================================================
+           COMPOSANTS UI REUTILISABLES
+           ============================================================ */
+        .btn-ucl { 
+            display: inline-block; background: var(--ucl-blue); color: white; 
+            padding: 22px 50px; text-decoration: none; font-weight: 800; 
+            text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2.5px;
+            transition: var(--transition); border: none; cursor: pointer; position: relative;
+        }
+        .btn-ucl::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background: var(--ucl-gold); transition: 0.4s; }
+        .btn-ucl:hover::after { width: 100%; }
+        .btn-ucl:hover { background: #001a35; transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,45,93,0.3); }
+
+        .label { color: var(--ucl-gold); text-transform: uppercase; font-weight: 900; font-size: 0.75rem; letter-spacing: 5px; margin-bottom: 25px; display: block; }
+        .section-padding { padding: 160px 0; }
+
+        /* ============================================================
+           SYSTÈME DE NAVIGATION SPA
+           ============================================================ */
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+
+        /* ============================================================
+           PAGE 1 : ACCUEIL (CAMPUS CRÉATIF)
+           ============================================================ */
+        .hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
+        .hero-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,45,93,0.7), rgba(0,0,0,0.5)); z-index: -1; }
+        
+        .hero h1 { font-size: clamp(3.5rem, 10vw, 8rem); line-height: 0.9; margin-bottom: 30px; letter-spacing: -2px; }
+        .hero h1 span { color: var(--ucl-gold); font-style: italic; font-weight: 400; }
+        .hero p { font-size: 1.5rem; font-weight: 300; max-width: 900px; margin: 0 auto 50px; line-height: 1.4; opacity: 0.9; }
+
+        .section-about { background: var(--ucl-grey); }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+        .about-text h2 { font-size: 4rem; margin-bottom: 40px; line-height: 1.1; }
+        .lead-manifesto { font-size: 1.6rem; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--ucl-gold); margin-bottom: 30px; }
+
+        .section-hangart { background: var(--white); }
+        .hangart-card { display: grid; grid-template-columns: 1.2fr 1fr; background: var(--ucl-blue); color: white; border-radius: 4px; overflow: hidden; box-shadow: 0 50px 100px rgba(0,45,93,0.25); }
+        .hangart-info { padding: 100px; }
+        .hangart-img { background: url('https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1000') center/cover; min-height: 500px; border-left: 15px solid var(--ucl-gold); }
+
+        .section-agenda { background: var(--ucl-blue); color: white; }
+        .event-card { background: white; color: var(--ucl-blue); border-radius: 4px; overflow: hidden; height: 550px; position: relative; transition: 0.5s; }
+        .event-img { height: 100%; width: 100%; background: #ddd center/cover; transition: 0.8s; filter: grayscale(1); }
+        .event-card:hover .event-img { filter: grayscale(0); transform: scale(1.05); }
+        .event-overlay { position: absolute; bottom: 0; width: 100%; padding: 50px; background: linear-gradient(to top, white 20%, transparent); }
+        .event-card h3 { font-size: 2rem; margin-bottom: 10px; }
+
+        /* ============================================================
+           PAGE 2 : ATELIERS (INDEX IMMERSIF)
+           ============================================================ */
+        .ateliers-header { padding: 220px 0 100px; background: var(--ucl-blue); color: white; text-align: center; }
+        .ateliers-header h1 { font-size: 5.5rem; letter-spacing: -2px; }
+
+        .floating-nav { 
+            position: sticky; top: 85px; background: var(--white); padding: 25px 0; 
+            z-index: 1000; border-bottom: 1px solid var(--border); display: flex; 
+            justify-content: center; gap: 40px; 
+        }
+        .floating-nav a { 
+            text-decoration: none; color: #aaaaaa; font-weight: 800; font-size: 0.75rem; 
+            text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+            position: relative; padding-bottom: 5px;
+        }
+        .floating-nav a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background: var(--ucl-gold); transition: 0.3s; }
+        .floating-nav a.active { color: var(--ucl-blue); }
+        .floating-nav a.active::after { width: 100%; }
+
+        .cat-hero { height: 60vh; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding-bottom: 100px; color: white; }
+        .cat-video { position: absolute; top:0; left:0; width:100%; height:100%; object-fit: cover; z-index: -1; filter: brightness(0.6); }
+        .cat-title-huge { font-size: 6rem; line-height: 0.8; }
+        .cat-title-huge span { color: var(--ucl-gold); font-style: italic; }
+
+        .compact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; padding: 60px 0 120px; }
+        
+        .w-card { 
+            background: white; padding: 40px; border: 1px solid #eeeeee; 
+            transition: var(--transition); display: flex; flex-direction: column;
+            border-bottom: 4px solid transparent;
+        }
+        .w-card:hover { 
+            transform: translateY(-15px); 
+            border-bottom-color: var(--ucl-gold);
+            box-shadow: 0 30px 60px rgba(0,45,93,0.08); 
+        }
+        .w-num { font-size: 2.5rem; font-family: 'Playfair Display', serif; color: var(--ucl-gold); font-style: italic; opacity: 0.3; margin-bottom: 25px; }
+        .w-card h4 { font-size: 1.15rem; text-transform: uppercase; font-weight: 900; margin-bottom: 15px; color: var(--ucl-blue); min-height: 55px; line-height: 1.2; }
+        .w-card p { font-size: 0.95rem; color: var(--text-light); font-weight: 600; }
+        .w-card .intervenant { color: var(--ucl-gold); margin-bottom: 5px; display: block; font-weight: 800; letter-spacing: 1px; font-size: 0.75rem; text-transform: uppercase; }
+
+        /* ============================================================
+           FOOTER INSTITUTIONNEL
+           ============================================================ */
+        .footer { padding: 120px 0 60px; background: var(--ucl-blue); color: white; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 80px; margin-bottom: 80px; }
+        .footer-logo { height: 60px; filter: brightness(0) invert(1); margin-bottom: 30px; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 40px; text-align: center; font-size: 0.8rem; opacity: 0.5; }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1200px) { .compact-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 992px) {
+            .about-grid, .hangart-card, .compact-grid { grid-template-columns: 1fr; }
+            .nav-container { padding: 0 20px; }
+            .site-name, .separator { display: none; }
+            .floating-nav { gap: 15px; overflow-x: auto; justify-content: flex-start; padding: 20px; }
+            .floating-nav a { white-space: nowrap; }
+            .ateliers-header h1 { font-size: 3.5rem; }
+            .hero h1 { font-size: 4rem; }
+            .hangart-info { padding: 50px; }
+        }
+    </style>
+</head>
+<body id="main-body">
+
+    <nav class="navbar" id="mainNav">
         <div class="nav-container">
-            <div class="brand">
+            <a class="brand" onclick="navigate('accueil')">
                 <img src="https://www.univ-catholille.fr/sites/default/files/logo-ucl.png" alt="Logo UCL" class="logo">
                 <div class="separator"></div>
                 <span class="site-name">Campus Créatif</span>
-            </div>
+            </a>
             <div class="nav-links">
-                <a href="#ateliers">Ateliers</a>
-                <a href="#agenda">Événements</a>
-                <a href="#recrutement" class="btn-contact">Nous rejoindre</a>
+                <a onclick="navigate('accueil')">Esprit</a>
+                <a onclick="navigate('ateliers')">Nos Ateliers</a>
+                <a href="#agenda">Agenda</a>
+                <a href="mailto:campus.creatif@univ-catholille.fr" class="btn-nav-gold">Nous rejoindre</a>
             </div>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="hero-video-container">
+    <div id="page-accueil" class="page-content active">
+        <header class="hero">
             <video autoplay muted loop playsinline class="hero-video">
                 <source src="video-accueil.mp4" type="video/mp4">
             </video>
             <div class="hero-overlay"></div>
-        </div>
-        <div class="hero-content">
-            <span class="hero-subtitle">Culture • Art • Études</span>
-            <h1 class="hero-title">L'Audace <span>Créative</span></h1>
-            <div class="hero-line"></div>
-            <p class="hero-desc">Explorez les 60 disciplines artistiques de l'Université Catholique de Lille.</p>
-            <div class="hero-btns">
-                <a href="#ateliers" class="btn-main">Explorer le catalogue</a>
-                <a href="#agenda" class="btn-secondary">Voir les événements</a>
-            </div>
-        </div>
-    </header>
-
-    <section id="ateliers" class="section-ateliers">
-        <div class="container">
-            <header class="section-header">
-                <h2 class="title-serif">Nos <span>Ateliers</span></h2>
-                <div class="filter-group">
-                    <button class="filter-btn active" data-filter="danse">Danse</button>
-                    <button class="filter-btn" data-filter="visuels">Arts Visuels</button>
-                    <button class="filter-btn" data-filter="theatre">Théâtre</button>
-                    <button class="filter-btn" data-filter="musique">Musique</button>
-                    <button class="filter-btn" data-filter="digital">Digital & Textile</button>
+            <div class="hero-content">
+                <span class="label" style="color:white">Art • Culture • Études</span>
+                <h1 class="serif">L'Audace <span>Créative</span></h1>
+                <p>Bienvenue dans l'espace de liberté artistique de l'Université Catholique de Lille. 55 disciplines d'exception pour forger votre identité créative.</p>
+                <div class="hero-btns">
+                    <button class="btn-ucl" onclick="navigate('ateliers')">Explorer le catalogue</button>
                 </div>
-            </header>
-
-            <div class="workshop-grid grid-danse" id="workshop-container">
-                <div class="workshop-item danse"> <div class="w-main"><h4>Heels Dance 1</h4><p>Emeline • Lun. 18h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Heels Dance 2</h4><p>Emeline • Lun. 19h30</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Afro Fusion 1</h4><p>Imane • Mar. 18h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Afro Fusion 2</h4><p>Imane • Mar. 19h30</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Street Jazz 1</h4><p>Juliette • Mer. 17h30</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Street Jazz 2</h4><p>Juliette • Mer. 19h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Hip Hop 1</h4><p>Billal • Jeu. 18h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Hip Hop 2</h4><p>Billal • Jeu. 19h30</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Hip Hop Girly Deb.</h4><p>Aurélie • Lun. 17h30</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Hip Hop Girly Av.</h4><p>Aurélie • Lun. 19h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>K-Pop 1</h4><p>Maddy • Mar. 17h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>K-Pop 2</h4><p>Maddy • Mar. 18h30</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Danse Orientale</h4><p>Juliette • Jeu. 17h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Contemporain</h4><p>Maddy • Mer. 18h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Salsa</h4><p>Gaëlle • Jeu. 18h30</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Bachata</h4><p>Anastasiya • Jeu. 20h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Contempo Classique</h4><p>Françoise • Mer. 14h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Comédie Musicale</h4><p>Tamara • Mar. 19h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Tecktonik</h4><p>Billal • Ven. 18h00</p></div> </div>
-                <div class="workshop-item danse"> <div class="w-main"><h4>Théâtre Musical</h4><p>Antoine • Jeu. 19h00</p></div> </div>
-
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Céramique 1 & 2</h4><p>Mer. 14h00 / 16h30</p></div> </div>
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Illustration</h4><p>Mar. 17h30</p></div> </div>
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Peinture</h4><p>Lun. 18h00</p></div> </div>
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Aquarelle</h4><p>Jeu. 18h00</p></div> </div>
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Dessin</h4><p>Mer. 18h00</p></div> </div>
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Poésie & Écriture</h4><p>Mar. 18h00</p></div> </div>
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Recette Coquette</h4><p>Sam. 10h00</p></div> </div>
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Carnet de bord 1 & 2</h4><p>Ven. 17h00</p></div> </div>
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Fresque & Linogravure</h4><p>Mer. 14h00</p></div> </div>
-                <div class="workshop-item visuels" style="display:none"> <div class="w-main"><h4>Art Plastique Multi.</h4><p>Lun. 17h00</p></div> </div>
-
-                <div class="workshop-item theatre" style="display:none"> <div class="w-main"><h4>Théâtre Contempo. 1 & 2</h4><p>Lun. 19h00 / Mer. 19h30</p></div> </div>
-                <div class="workshop-item theatre" style="display:none"> <div class="w-main"><h4>Théâtre Impro 1 & 2</h4><p>Mar. 18h30 / Jeu. 18h30</p></div> </div>
-                <div class="workshop-item theatre" style="display:none"> <div class="w-main"><h4>Théâtre Classique</h4><p>Mar. 17h00</p></div> </div>
-
-                <div class="workshop-item musique" style="display:none"> <div class="w-main"><h4>Cours de Chant 1 & 2</h4><p>Lun. 18h00 / Mer. 18h00</p></div> </div>
-                <div class="workshop-item musique" style="display:none"> <div class="w-main"><h4>Guitare Deb. / Av.</h4><p>Mar. 17h30 / 19h00</p></div> </div>
-                <div class="workshop-item musique" style="display:none"> <div class="w-main"><h4>Cours de Piano</h4><p>Mer. 14h00</p></div> </div>
-                <div class="workshop-item musique" style="display:none"> <div class="w-main"><h4>Comp. Musicale</h4><p>Ven. 17h30</p></div> </div>
-
-                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Couture & Haute Couture</h4><p>Lun. 18h00 / Mer. 18h30</p></div> </div>
-                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Crochet, Broderie, Tricot</h4><p>Mar. 17h30 / Jeu. 17h30</p></div> </div>
-                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Photo Arg. / Num.</h4><p>Mer. 14h00 / Jeu. 18h00</p></div> </div>
-                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Podcast & Vidéo</h4><p>Mar. 17h00 / Lun. 18h30</p></div> </div>
-                <div class="workshop-item digital" style="display:none"> <div class="w-main"><h4>Court Métrage</h4><p>Ven. 17h00</p></div> </div>
             </div>
-        </div>
-    </section>
+        </header>
 
-    <section id="agenda" class="section-agenda">
-        <div class="container">
-            <h2 class="title-serif light">Découvre nos <span>événements</span></h2>
-            
-            <div class="swiper event-slider">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="event-card main-event">
-                            <div class="event-img" style="background-image: url('affiche1.jpg');"></div>
-                            <div class="event-overlay">
-                                <span class="event-tag">À l'Affiche</span>
-                                <h3>Grand Gala de Printemps</h3>
-                                <p>Le rendez-vous incontournable à l'Aula Maxima.</p>
-                                <a href="Lien_Weezevent" class="btn-ticket">Billetterie Weezevent</a>
+        <section id="about" class="section-padding section-about">
+            <div class="container">
+                <div class="about-grid">
+                    <div class="about-visual">
+                        <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800" alt="Art" style="width:100%; border-bottom: 12px solid var(--ucl-gold); box-shadow: 0 30px 60px rgba(0,0,0,0.1);">
+                    </div>
+                    <div class="about-text">
+                        <span class="label">Manifeste</span>
+                        <h2>Un service dédié à votre <span>épanouissement.</span></h2>
+                        <p class="lead-manifesto">Le Campus Créatif accompagne la vie étudiante de l'UCLille.</p>
+                        <p>Nous proposons aux étudiants de toutes les facultés et écoles des ateliers de pratique artistique encadrés par des professionnels. Ces moments de création, situés sur le temps du midi ou en soirée, sont des parenthèses essentielles pour cultiver sa curiosité et rencontrer l'autre.</p>
+                        <br><br>
+                        <button class="btn-ucl" onclick="navigate('ateliers')">Découvrir les ateliers</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="hangart" class="section-padding section-hangart">
+            <div class="container">
+                <div class="hangart-card">
+                    <div class="hangart-info">
+                        <span class="label" style="color:var(--ucl-gold)">Le Tiers-Lieu</span>
+                        <h2 class="serif" style="font-size: 3.5rem; margin-bottom: 30px;">Le <span>Hangart</span></h2>
+                        <p style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 40px;">Un espace hybride de 300m² dédié à la création, aux répétitions et aux expositions au cœur du campus. Un véritable laboratoire d'expérimentation culturelle.</p>
+                        <button class="btn-ucl" style="background:var(--ucl-gold); color:var(--ucl-blue)">Visiter le lieu</button>
+                    </div>
+                    <div class="hangart-img"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="agenda" class="section-padding section-agenda">
+            <div class="container">
+                <span class="label">Programmation</span>
+                <h2 class="serif" style="font-size: 4rem; margin-bottom: 60px;">Agenda <span>Culturel</span></h2>
+                <div class="swiper agenda-slider">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="event-card">
+                                <div class="event-img" style="background-image: url('affiche1.jpg');"></div>
+                                <div class="event-overlay">
+                                    <span class="label" style="margin-bottom:10px">Juin 2026</span>
+                                    <h3>Grand Gala de Printemps</h3>
+                                    <p>Aula Maxima • Spectacle Total</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="event-card">
+                                <div class="event-img"></div>
+                                <div class="event-overlay">
+                                    <span class="label" style="margin-bottom:10px">Décembre 2026</span>
+                                    <h3>Festival d'Hiver</h3>
+                                    <p>Le Hangart • Restitutions</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="event-card">
+                                <div class="event-img"></div>
+                                <div class="event-overlay">
+                                    <span class="label" style="margin-bottom:10px">Février 2026</span>
+                                    <h3>Vernissage Arts Visuels</h3>
+                                    <p>Hall de l'Hôtel Académique</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide"><div class="event-card"><div class="event-img"></div><div class="event-info"><h5>Festival d'Hiver</h5><p>Décembre 2026</p><a href="#">Réserver →</a></div></div></div>
-                    <div class="swiper-slide"><div class="event-card"><div class="event-img"></div><div class="event-info"><h5>Soirée Impro</h5><p>Janvier 2026</p><a href="#">Réserver →</a></div></div></div>
-                    <div class="swiper-slide"><div class="event-card"><div class="event-img"></div><div class="event-info"><h5>Concert Acoustique</h5><p>Février 2026</p><a href="#">Réserver →</a></div></div></div>
-                    <div class="swiper-slide"><div class="event-card"><div class="event-img"></div><div class="event-info"><h5>Vernissage Expo</h5><p>Mars 2026</p><a href="#">Infos →</a></div></div></div>
-                    </div>
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-next"></div>
-                <div class="swiper-button-prev"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
-    <section id="recrutement" class="section-intervenants">
-        <div class="container">
-            <div class="inter-grid">
-                <div class="inter-image">
-                    <div class="image-wrapper">
-                        <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800" alt="Intervenant">
-                        <div class="image-overlay-gold"></div>
+    <div id="page-ateliers" class="page-content">
+        <header class="ateliers-header">
+            <div class="container">
+                <span class="label">Saison 2026/2027</span>
+                <h1 class="serif">L'Index des <span>Disciplines</span></h1>
+                <p style="font-size: 1.4rem; font-weight: 300; opacity: 0.8; margin-top: 20px;">Explorez nos 55 ateliers de pratique artistique.</p>
+            </div>
+        </header>
+
+        <nav class="floating-nav">
+            <a href="#danse" class="active">Danse</a>
+            <a href="#visuels">Arts Visuels</a>
+            <a href="#theatre">Théâtre</a>
+            <a href="#musique">Musique</a>
+            <a href="#audiovisuel">Audiovisuel</a>
+            <a href="#textiles">Textiles</a>
+        </nav>
+
+        <main class="container-large">
+            <section id="danse" class="cat-section">
+                <div class="cat-hero">
+                    <video autoplay muted loop playsinline class="cat-video"><source src="video-danse.mp4" type="video/mp4"></video>
+                    <div class="container"><h2 class="cat-title-huge serif">Univers <span>Danse</span></h2><p style="max-width: 600px; margin-top: 20px;">20 parcours pour libérer votre mouvement.</p></div>
+                </div>
+                <div class="compact-grid">
+                    <article class="w-card"><span class="w-num">01</span><span class="intervenant">EMELINE</span><h4>HEELS DANCE 1</h4><p>Lundi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">02</span><span class="intervenant">EMELINE</span><h4>HEELS DANCE 2</h4><p>Lundi 19:30</p></article>
+                    <article class="w-card"><span class="w-num">03</span><span class="intervenant">IMANE</span><h4>AFRO FUSION 1</h4><p>Mardi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">04</span><span class="intervenant">IMANE</span><h4>AFRO FUSION 2</h4><p>Mardi 19:30</p></article>
+                    <article class="w-card"><span class="w-num">05</span><span class="intervenant">JULIETTE</span><h4>STREET JAZZ COMMERCIAL 1</h4><p>Mercredi 17:30</p></article>
+                    <article class="w-card"><span class="w-num">06</span><span class="intervenant">JULIETTE</span><h4>STREET JAZZ COMMERCIAL 2</h4><p>Mercredi 19:00</p></article>
+                    <article class="w-card"><span class="w-num">07</span><span class="intervenant">BILLAL</span><h4>HIP HOP 1</h4><p>Jeudi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">08</span><span class="intervenant">BILLAL</span><h4>HIP HOP 2</h4><p>Jeudi 19:30</p></article>
+                    <article class="w-card"><span class="w-num">09</span><span class="intervenant">AURELIE</span><h4>HIP HOP GIRLY DEBUTANT</h4><p>Lundi 17:30</p></article>
+                    <article class="w-card"><span class="w-num">10</span><span class="intervenant">AURELIE</span><h4>HIP HOP GIRLY AVANCE</h4><p>Lundi 19:00</p></article>
+                    <article class="w-card"><span class="w-num">11</span><span class="intervenant">MADDY</span><h4>KPOP 1</h4><p>Mardi 17:00</p></article>
+                    <article class="w-card"><span class="w-num">12</span><span class="intervenant">MADDY</span><h4>KPOP 2</h4><p>Mardi 18:30</p></article>
+                    <article class="w-card"><span class="w-num">13</span><span class="intervenant">JULIETTE</span><h4>DANSE ORIENTALE</h4><p>Jeudi 17:00</p></article>
+                    <article class="w-card"><span class="w-num">14</span><span class="intervenant">MADDY</span><h4>CONTEMPORAIN</h4><p>Mercredi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">15</span><span class="intervenant">GAELLE</span><h4>SALSA</h4><p>Jeudi 18:30</p></article>
+                    <article class="w-card"><span class="w-num">16</span><span class="intervenant">ANASTASIYA</span><h4>BATCHATA</h4><p>Jeudi 20:00</p></article>
+                    <article class="w-card"><span class="w-num">17</span><span class="intervenant">FRANCOISE</span><h4>CONTEMPO CLASSIQUE</h4><p>Mercredi 14:00</p></article>
+                    <article class="w-card"><span class="w-num">18</span><span class="intervenant">TAMARA</span><h4>COMEDIE MUSICALE BRODWAY</h4><p>Mardi 19:00</p></article>
+                    <article class="w-card"><span class="w-num">19</span><span class="intervenant">BILLAL</span><h4>TECHNTONIK</h4><p>Vendredi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">20</span><span class="intervenant">ANTOINE</span><h4>MUSICAL THEATRE</h4><p>Jeudi 19:00</p></article>
+                </div>
+            </section>
+
+            <section id="visuels" class="cat-section">
+                <div class="cat-hero" style="background: var(--ucl-grey); color: var(--ucl-blue);"><div class="container"><h2 class="cat-title-huge serif">Arts <span>Visuels</span></h2><p>Matière, pigments et volumes. Explorez 15 parcours de création.</p></div></div>
+                <div class="compact-grid">
+                    <article class="w-card"><span class="w-num">01</span><span class="intervenant">ATELIER CAMPUS</span><h4>RECETTE COQUETTE</h4><p>Samedi 10:00</p></article>
+                    <article class="w-card"><span class="w-num">02</span><span class="intervenant">ATELIER CAMPUS</span><h4>ILLUSTRATION</h4><p>Mardi 17:30</p></article>
+                    <article class="w-card"><span class="w-num">03</span><span class="intervenant">ATELIER CAMPUS</span><h4>PEINTURE</h4><p>Lundi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">04</span><span class="intervenant">ATELIER CAMPUS</span><h4>CERAMIQUE 1</h4><p>Mercredi 14:00</p></article>
+                    <article class="w-card"><span class="w-num">05</span><span class="intervenant">ATELIER CAMPUS</span><h4>AQUARELLE</h4><p>Jeudi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">06</span><span class="intervenant">ATELIER CAMPUS</span><h4>DESSIN</h4><p>Mercredi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">07</span><span class="intervenant">ATELIER CAMPUS</span><h4>POESIE</h4><p>Mardi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">08</span><span class="intervenant">ATELIER CAMPUS</span><h4>ECRITURE</h4><p>Mardi 18:00</p></article>
+                    <article class="w-card"><span class="w-num">09</span><span class="intervenant">ATELIER CAMPUS</span><h4>CERAMIQUE 2</h4><p>Mercredi 16:30</p></article>
+                    <article class="w-card"><span class="w-num">10</span><span class="intervenant">ATELIER CAMPUS</span><h4>TRICOT</h4><p>Mardi 17:30</p></article>
+                    <article class="w-card"><span class="w-num">11</span><span class="intervenant">ATELIER CAMPUS</span><h4>CARNET DE BORD 1</h4><p>Vendredi 17:00</p></article>
+                    <article class="w-card"><span class="w-num">12</span><span class="intervenant">ATELIER CAMPUS</span><h4>CARNET DE BORD 2</h4><p>Vendredi 18:30</p></article>
+                    <article class="w-card"><span class="w-num">13</span><span class="intervenant">ATELIER CAMPUS</span><h4>FRESQUE</h4><p>Mercredi 14:00</p></article>
+                    <article class="w-card"><span class="w-num">14</span><span class="intervenant">ATELIER CAMPUS</span><h4>LINOGRAVURE</h4><p>Mardi 14:00</p></article>
+                    <article class="w-card"><span class="w-num">15</span><span class="intervenant">ATELIER CAMPUS</span><h4>ART PLASTIQUE MULTITECHNIQUE</h4><p>Lundi 17:00</p></article>
+                </div>
+            </section>
+
+            <section id="theatre" class="cat-section">
+                <div class="cat-hero" style="background: var(--ucl-blue); color: white;"><div class="container"><h2 class="cat-title-huge serif">Univers <span>Théâtre</span></h2><p>5 parcours pour briser le quatrième mur.</p></div></div>
+                <div class="compact-grid">
+                    <article class="w-card"><span class="w-num">01</span><span class="intervenant">EXPERT PRO</span><h4>THEATRE CONTEMPORAIN 1</h4><p>Lundi 19:00</p></article>
+                    <article class="w-card"><span class="w-num">02</span><span class="intervenant">EXPERT PRO</span><h4>THEATRE IMPRO 1</h4><p>Mardi 18:30</p></article>
+                    <article class="w-card"><span class="w-num">03</span><span class="intervenant">EXPERT PRO</span><h4>THEATRE CLASSIQUE</h4><p>Mardi 17:00</p></article>
+                    <article class="w-card"><span class="w-num">04</span><span class="intervenant">EXPERT PRO</span><h4>THEATRE IMPRO 2</h4><p>Jeudi 18:30</p></article>
+                    <article class="w-card"><span class="w-num">05</span><span class="intervenant">EXPERT PRO</span><h4>THEATRE CONTEMPORAIN 2</h4><p>Mercredi 19:30</p></article>
+                </div>
+            </section>
+
+            <section id="musique" class="cat-section">
+                <div class="container-large">
+                    <h2 class="serif" style="font-size: 5rem; margin-bottom: 50px;">Univers <span>Musique</span></h2>
+                    <div class="compact-grid">
+                        <article class="w-card"><span class="w-num">01</span><span class="intervenant">ATELIER CAMPUS</span><h4>COMPOSITION MUSICALE</h4><p>Vendredi 17:30</p></article>
+                        <article class="w-card"><span class="w-num">02</span><span class="intervenant">ATELIER CAMPUS</span><h4>COURS DE CHANT 1</h4><p>Lundi 18:00</p></article>
+                        <article class="w-card"><span class="w-num">03</span><span class="intervenant">ATELIER CAMPUS</span><h4>GUITARE DEBUTANT</h4><p>Mardi 17:30</p></article>
+                        <article class="w-card"><span class="w-num">04</span><span class="intervenant">ATELIER CAMPUS</span><h4>GUITARE AVANCE</h4><p>Mardi 19:00</p></article>
+                        <article class="w-card"><span class="w-num">05</span><span class="intervenant">ATELIER CAMPUS</span><h4>COURS DE CHANT 2</h4><p>Mercredi 18:00</p></article>
+                        <article class="w-card"><span class="w-num">06</span><span class="intervenant">ATELIER CAMPUS</span><h4>COUR DE PIANO</h4><p>Mercredi 14:00</p></article>
                     </div>
                 </div>
-                <div class="inter-content">
-                    <span class="label-gold">Collaborations 2026/2027</span>
-                    <h2 class="title-serif">Faisons vibrer le <span>Campus ensemble</span></h2>
-                    <p class="inter-desc">Vous êtes artiste ou professionnel ? Proposez vos formats d'ateliers hybrides.</p>
-                    <a href="mailto:campus.creatif@univ-catholille.fr" class="btn-luxe">Proposer un atelier</a>
+            </section>
+
+            <section id="audiovisuel" class="cat-section">
+                <div class="container-large">
+                    <h2 class="serif" style="font-size: 5rem; margin-bottom: 50px;">Univers <span>Audiovisuel</span></h2>
+                    <div class="compact-grid">
+                        <article class="w-card"><span class="w-num">01</span><span class="intervenant">STUDIO CAMPUS</span><h4>PHOTO ARGENTIQUE</h4><p>Mercredi 14:00</p></article>
+                        <article class="w-card"><span class="w-num">02</span><span class="intervenant">STUDIO CAMPUS</span><h4>PODCAST</h4><p>Mardi 17:00</p></article>
+                        <article class="w-card"><span class="w-num">03</span><span class="intervenant">STUDIO CAMPUS</span><h4>CREATION DE CONTENU VIDEO</h4><p>Lundi 18:30</p></article>
+                        <article class="w-card"><span class="w-num">04</span><span class="intervenant">STUDIO CAMPUS</span><h4>COURT METRAGE</h4><p>Vendredi 17:00</p></article>
+                        <article class="w-card"><span class="w-num">05</span><span class="intervenant">STUDIO CAMPUS</span><h4>PHOTO NUMERIQUE</h4><p>Jeudi 18:00</p></article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="textiles" class="cat-section">
+                <div class="container-large">
+                    <h2 class="serif" style="font-size: 5rem; margin-bottom: 50px;">Univers <span>Textile</span></h2>
+                    <div class="compact-grid">
+                        <article class="w-card"><span class="w-num">01</span><span class="intervenant">ATELIER TEXTILE</span><h4>CROCHET</h4><p>Mardi 17:30</p></article>
+                        <article class="w-card"><span class="w-num">02</span><span class="intervenant">ATELIER TEXTILE</span><h4>BRODERIE</h4><p>Mardi 18:30</p></article>
+                        <article class="w-card"><span class="w-num">03</span><span class="intervenant">ATELIER TEXTILE</span><h4>INITIATION COUTURE</h4><p>Lundi 18:00</p></article>
+                        <article class="w-card"><span class="w-num">04</span><span class="intervenant">ATELIER TEXTILE</span><h4>HAUTE COUTURE</h4><p>Mercredi 18:30</p></article>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="https://www.univ-catholille.fr/sites/default/files/logo-ucl.png" alt="UCL" class="footer-logo">
+                    <p>Le Campus Créatif est le service culturel de l'Université Catholique de Lille. Nous œuvrons pour l'épanouissement des étudiants par la pratique des arts.</p>
+                </div>
+                <div class="footer-nav">
+                    <span class="label" style="color:white; margin-bottom:15px">Navigation</span>
+                    <ul style="list-style:none">
+                        <li><a onclick="navigate('accueil')" style="color:white; opacity:0.6; text-decoration:none">Accueil</a></li>
+                        <li><a onclick="navigate('ateliers')" style="color:white; opacity:0.6; text-decoration:none">Catalogue Ateliers</a></li>
+                        <li><a href="#agenda" style="color:white; opacity:0.6; text-decoration:none">Agenda Culturel</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <span class="label" style="color:white; margin-bottom:15px">Contact</span>
+                    <p style="opacity:0.6">60 Boulevard Vauban, 59000 Lille</p>
+                    <p style="opacity:0.6">campus.creatif@univ-catholille.fr</p>
                 </div>
             </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Campus Créatif • Université Catholique de Lille. Tous droits réservés.</p>
+            </div>
         </div>
-    </section>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainNav = document.getElementById('mainNav');
+            const mainBody = document.getElementById('main-body');
+
+            // 1. GESTION NAVIGATION SPA
+            window.navigate = function(pageId) {
+                document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+                document.getElementById('page-' + pageId).classList.add('active');
+                
+                if (pageId === 'ateliers') {
+                    mainBody.classList.add('page-ateliers-active');
+                } else {
+                    mainBody.classList.remove('page-ateliers-active');
+                }
+                
+                window.scrollTo(0, 0);
+            };
+
+            // 2. NAVBAR SCROLL EFFECT
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 80) {
+                    mainNav.classList.add('scrolled');
+                } else {
+                    mainNav.classList.remove('scrolled');
+                }
+            });
+
+            // 3. INITIALISATION SWIPER (AGENDA)
+            new Swiper('.agenda-slider', {
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                pagination: { el: '.swiper-pagination', clickable: true },
+                breakpoints: {
+                    800: { slidesPerView: 2 },
+                    1200: { slidesPerView: 3 }
+                }
+            });
+
+            // 4. NAVIGATION FLOTTANTE (ACTIVE STATE)
+            const catSections = document.querySelectorAll('.cat-section');
+            const floatingLinks = document.querySelectorAll('.floating-nav a');
+
+            window.addEventListener('scroll', () => {
+                let current = "";
+                catSections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= (sectionTop - 400)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                floatingLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // 5. ANIMATIONS REVEAL
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.w-card, .event-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(40px)';
+                el.style.transition = 'all 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                observer.observe(el);
+            });
+        });
+    </script>
 </body>
 </html>
